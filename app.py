@@ -35,20 +35,8 @@ if st.button("Summarize the Content from YT or Website"):
                 ## loading the Groq API model
                 llm =ChatGroq(model="Llama-3.1-8b-Instant", groq_api_key=groq_api_key)
                 ## loading the website or yt video data
-                if "youtube.com" in generic_url or "youtu.be" in generic_url:
-                        # Clean the YouTube URL and extract video ID
-                    if "youtu.be/" in generic_url:
-                            video_id = generic_url.split("youtu.be/")[1].split("?")[0]
-                            clean_url = f"https://www.youtube.com/watch?v={video_id}"
-                    else:
-                            clean_url = generic_url.split("&")[0]  # Remove extra parameters
-                        
-                    st.info(f"Loading YouTube video: {clean_url}")
-                    loader = YoutubeLoader.from_youtube_url(
-                            clean_url, 
-                            add_video_info=False,  # Set to False to avoid metadata issues
-                            language=["en", "en-US"]  # Specify language preferences
-                        ) # if the url contains youtube.com then load the video and add the video info
+                if "youtube.com" in generic_url:
+                    loader=YoutubeLoader.from_youtube_url(generic_url,add_video_info=True) # if the url contains youtube.com then load the video and add the video info
                 else:
                     loader=UnstructuredURLLoader(urls=[generic_url],ssl_verify=False,
                                                  headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
